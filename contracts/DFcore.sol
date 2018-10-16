@@ -9,7 +9,7 @@ contract DFcore is Ownable {
     uint amount;
     uint limittime;
     address[] supportersArray;
-    mapping (address => uint) public funds;  //支援者の誰がどれだけ投げてくれたのかを記録しておく
+    mapping (address => uint) funds;  //支援者の誰がどれだけ投げてくれたのかを記録しておく
   }
 
   Box[] public Boxs;
@@ -21,9 +21,10 @@ contract DFcore is Ownable {
     _;
   }
 
-  function makeBox(string _name, uint _target) public {  // クラウドファンディングのETHを貯める箱を作る関数
-    uint limittime = now + 30 days; //とりあえずデフォルトで期限を30日と設定
-    uint id = Boxs.push(Box(_name,_target, 0, limittime)) - 1;
+  function makeBox(string _purpose, uint _target) public {  // クラウドファンディングのETHを貯める箱を作る関数
+    uint _limittime = now + 30 days; //とりあえずデフォルトで期限を30日と設定
+    address[] memory _supportersArray;
+    uint id = Boxs.push(Box(_purpose,_target, 0, _limittime, _supportersArray)) - 1;
     BoxToOwner[id] = msg.sender;
     ownerBoxCount[msg.sender]++;
   }
@@ -32,7 +33,7 @@ contract DFcore is Ownable {
     require(Boxs[_id].amount < Boxs[_id].target);
     require(now <= Boxs[_id].limittime);
     Boxs[_id].amount = Boxs[_id].amount + msg.value;
-    Boxs[_id].supporters[].push(msg.sender);
+    Boxs[_id].supportersArray.push(msg.sender);
     Boxs[_id].funds[msg.sender] = msg.value;
   }
 
@@ -58,7 +59,7 @@ contract DFcore is Ownable {
   }
 
   function getBoxByOwner(address _owner) external view returns(uint[]) {
-    uint[] memory result = new int[](ownerBoxCount[_owner]);
+    uint[] memory result = new uint[](ownerBoxCount[_owner]);
     uint counter = 0;
     for (uint i = 0; i < Boxs.length; i++) {
       result[counter] = i;
