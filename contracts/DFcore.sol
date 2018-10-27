@@ -28,7 +28,7 @@ contract DFcore is Ownable {
     BoxToOwner[id] = msg.sender;
     ownerBoxCount[msg.sender]++;
   }
-  
+
   function deposit(uint _id) public payable { // 箱にETHを投げる関数
     require(Boxs[_id].amount < Boxs[_id].target);
     require(now <= Boxs[_id].limittime);
@@ -66,6 +66,10 @@ contract DFcore is Ownable {
       counter++;
     }
     return result;
+  }
+
+  function getBox(uint _id) public view returns(uint) {
+    return (Boxs[_id].amount);
   }
 
 }

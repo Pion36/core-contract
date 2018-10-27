@@ -1,7 +1,7 @@
 var DFcore = artifacts.require("./DFcore.sol");
 
 contract('DFcore', function(accounts) {
-  it("should", function() {
+  it("make box", function() {
     var core;
     return DFcore.deployed().then(function(instance) {
       core = instance;
@@ -13,32 +13,26 @@ contract('DFcore', function(accounts) {
     });
   });
 
-  it("sholud", function() {
+  it("mapping 両方確認", function() {
     var core;
     return DFcore.deployed().then(function(instance) {
       core = instance;
       return core.BoxToOwner.call(0);
     }).then(function(result) {
-      console.log(result);
+      console.log("Box 0's owner : " + result);
+      return core.ownerBoxCount.call(result);
+    }).then(function(num) {
+      console.log("address box num : " + num);
     });
   });
 
   it("deposit", function() {
     var core;
-    var amount = 1;
-    var id = 0;
     return DFcore.deployed().then(function(instance) {
       core = instance;
-      return core.deposit(id, {
-        value: web3.toWei(10, 'ether')
-      }, (err, result) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log(amount)
-          return amount
-        }
-      });
-    })
+      return core.deposit(0, {value: web3.toWei(0.1, 'ether')});
+    }).then(function() {
+      console.log(core.getBox(0));
+    });
   });
 });
