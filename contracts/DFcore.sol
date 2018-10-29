@@ -68,8 +68,12 @@ contract DFcore is Ownable {
     return result;
   }
 
-  function getBox(uint _id) public view returns(uint) {
-    return (Boxs[_id].amount);
+  function getBox(uint _id) public view returns(string, uint256, uint256, uint256, address[]) {
+    return (Boxs[_id].purpose, Boxs[_id].target, Boxs[_id].amount, Boxs[_id].limittime, Boxs[_id].supportersArray);
+  }
+
+  function getBoxfunds(uint _id, address _address) public view returns(uint256) {
+    return (Boxs[_id].funds[_address]);
   }
 
 }

@@ -30,9 +30,15 @@ contract('DFcore', function(accounts) {
     var core;
     return DFcore.deployed().then(function(instance) {
       core = instance;
-      return core.deposit(0, {value: web3.toWei(0.1, 'ether')});
+      return core.deposit(0, {value: web3.toWei(5, 'ether')});
     }).then(function() {
-      console.log(core.getBox(0));
+      return core.getBox(0);
+    }).then(function(result) {
+      console.log(result);
+    }).then(function() {
+      return core.getBoxfunds(0, accounts[0]);
+    }).then(function(result) {
+      console.log(accounts[0]+ " が投げた額は " + result);
     });
   });
 });
