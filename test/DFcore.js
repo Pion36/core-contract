@@ -52,11 +52,11 @@ contract('DFcore', function(accounts) {
     }).then(function(result) {
       console.log(result);
     }).then(function() {
-      console.log("Before:" + web3.eth.getBalance(accounts[0]));
+      console.log("Before success:" + web3.eth.getBalance(accounts[0]));
     }).then(function() {
       return core.success_withdraw(0);
     }).then(function() {
-      console.log("After:" + web3.eth.getBalance(accounts[0]));
+      console.log("After success:" + web3.eth.getBalance(accounts[0]));
     }).then(function() {
       return core.getPJInfo(0);
     }).then(function(result) {
@@ -111,4 +111,14 @@ contract('DFcore', function(accounts) {
       console.log("address PJ num : " + num);
     });
   });
+
+  it("PJの数を取得", function() {
+    var core;
+    return DFcore.deployed().then(function(instance) {
+      core = instance;
+      return core.getPJcount()
+    }).then(function(result) {
+      console.log(result)
+    })
+  })
 });
